@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'com.commercehub.gradle.plugin.avro' version '0.21.0'
+}
+
+repositories {
+    maven {
+      url 'http://packages.confluent.io/maven/'
+    }
+    mavenLocal()
+    jcenter()
+}
+
+dependencies {
+    implementation 'org.apache.kafka:kafka-clients:2.6.0'
+    implementation 'org.apache.avro:avro:1.10.0'
+    implementation 'io.confluent:kafka-avro-serializer:5.4.1'
+}
+
+group = 'com.kafkabr.e5o'
+version = '1.0'
+sourceCompatibility = '1.8'
+
+avro {
+  createSetters = false
+  fieldVisibility = "PRIVATE"
+}
+
+java {
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
